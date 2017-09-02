@@ -18,6 +18,8 @@ fun main(args: Array<String>) {
             builder.setDirectory(file)
         } else if (file.extension == "xml") {
             builder.addFiles(file)
+        } else {
+            println("File must of type xml or a resource directory containing the xml files")
         }
     } else {
         builder.addFiles(args)
