@@ -20,6 +20,7 @@ fun main(args: Array<String>) {
             builder.addFiles(file)
         } else {
             println("File must of type xml or a resource directory containing the xml files")
+            return
         }
     } else {
         builder.addFiles(args)
