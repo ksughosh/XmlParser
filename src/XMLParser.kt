@@ -10,11 +10,20 @@ fun main(args: Array<String>) {
         println("define command: \"\$kotlin XMLParser pathOf<<resource_directory> or <file1>, <file2>, <file3>...>\"")
         return
     }
-    val parser: XMLParser = XMLParser.Companion
-            .Builder()
-            .setDirectory(File(args[0]))
-            .setType(XMLParserType.UNITY)
-            .build()
+    val builder = XMLParser.Companion.Builder()
+
+    if (args.size == 1) {
+        val file = File(args[0])
+        if (file.isDirectory){
+            builder.setDirectory(file)
+        } else if (file.extension == "xml") {
+            builder.addFiles(file)
+        }
+    } else {
+        builder.addFiles(args)
+    }
+    builder.setType(XMLParserType.UNITY)
+    val parser = builder.build()
     parser.start()
 }
 
@@ -64,7 +73,7 @@ abstract class XMLParser protected constructor(protected val listOfFiles: List<F
 
             fun addFiles(paths: Array<String>): Builder{
                 paths.mapNotNull { File(it) }
-                        .filter { it.exists() }
+                        .filter { it.exists() && it.extension == ".xml" }
                         .forEach { listOfFiles.add(it) }
                 return this
             }
